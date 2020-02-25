@@ -1,296 +1,177 @@
-const root = document.querySelector("#root");
-
-// Styles
-const bodyStyles = {
-  background: "-webkit-gradient(linear, left top, right top, color-stop(0%, transparent), color-stop(50%,red), color-stop(100%,transparent))",
-  background: "-webkit-linear-gradient(left, transparent 0%,red 50%,transparent 100%)", /* Chrome10+, Safari5.1+ */
-  background: "-moz-linear-gradient(left, transparent 0%,red 50%,transparent 100%)",    /* FF3.6+ */
-  background: "linear-gradient(to bottom right,#ff5555 40%,#5555ff 100%)",
-  width: "100%",
-  height: "100vh",
-  overflowX: "hidden"
-}
-const headerStyles = {
-  textAlign: "center",
-  color:"#fff",
-}
-const cardContainerStyles = {
-  width: "300px",
-  height: "500px",
-  background: "#fff",
-  borderRadius: 35,
-  boxShadow: "1px 1px 35px #444"
-};
-const imgContainerStyles = {
-  backgroundColor:"#fff",
-  height: "35%",
-  margin: 0,
-  borderTopRightRadius: 35,
-  borderTopLeftRadius: 35,
-  background: "#444",
-  backgroundSize: "cover"
-}
-const avatarContainerStyles = {
-  width: "150px",
-  height: "150px",
-  zIndex: "9",
-  position: "relative",
-  top: "-85px",
-  left: "65px",
-  right: "0",
-  margin: "0 auto",
-  border: "10px solid #fff",
-  background: "#000",
-  backgroundSize: "cover",
-  display: "inline-block",
-  textAlign: "center",
-  borderRadius: "50%"
-};
-const titleStyles = {
-  color:"#555",
-  fontWeight: "100",
-  outline: "none",
-  margin: "0px",
-  display: "inline-block",
-  width: "100%",
-  textAlign: "center",
-  position: "relative",
-  top: "-75px"
-};
-const subTitleStyles = {
-  position: "relative",
-  top: "-95px",
-  textAlign: "center",
-  fontWeight: "100",
-  color: "#888"
-};
-const bioContainerStyles = {
-  position: "relative",
-  top: "-95px"
-};
-const bioStyles = {
-  color: "#444",
-  padding: "0 30px",
-  textAlign: "center"
-};
-const iconsContainerStyles = {
-  position: "relative",
-  top: "-85px",
-  textAlign: "center"
-}
-const iconStyles = {
-  margin: "0 10px",
-  color: "#5C6BC0",
-  fontSize: "24px"
-}
-const cardBackStyles = {
-  height: 500,
-  width: 300,
-  position: "absolute",
-  top: "0",
-  bottom: "0",
-  left: "0",
-  right: "0",
-  margin: "auto",
-  borderRadius: "35px",
-  boxShadow: "1px 1px 35px #444",
-  background: "')",
-  backgroundSize: "cover",
-  backgroundPosition: "right"
-}
-const madeByStyles = {
-  color: "#fff",
-  opacity: ".5",
-  textAlign: "center",
-  padding: "0px"
-}
-
-const imgStyles = {
-  width: 300,
-  borderTopRightRadius: 35,
-  borderTopLeftRadius: 35
-}
-
-const avatarImgStyles = {
-  width: "100%",
-  position: "absolute",
-  top: "0",
-  bottom: "0",
-  left: "0",
-  right: "0",
-  margin: "auto",
-  borderRadius: "50%"
-}
-
-const cardBackImgStyles = {
-  height: "100%",
-  width: "100%",
-  borderRadius: 35,
-  position: "absolute"
+//concept https://dribbble.com/shots/2493845-ToFind-Transition-Test
+class Card extends React.Component{
   
-}
-
-// Components
-class CardImg extends React.Component {
   constructor(props){
-    super(props);
+    super(props)
+    
+    this.state = {
+      expanded: false,
+      loading: true,
+      fullscreen: false,
+      colors: []
+    }
   }
+  
+  handleClick(e){
+    if(this.state.fullscreen) return;
+    this.setState({
+      expanded: !this.state.expanded
+    })
+  }
+  
+  handleImageLoaded(e){
+    let node = ReactDOM.findDOMNode(e.target)
+    console.log('image loaded', node)
+    let image = new Image();
+    image.crossOrigin = "Anonymous";
+    image.onload = e => {
+      
+      let colorThief = new ColorThief();
+      let colors = colorThief.getPalette(image, 2);
+      this.setState({loading: false, colors}, ()=>{
+        if(this.props.onColors) this.props.onColors(this.state.colors)
+        
+        //demo
+        //setTimeout(this.handleClick.bind(this), 500)
+      })
+    }
+    image.src = node.src + '?t=' + Date.now()
+  }
+  
   render(){
-    return (
-       <div style={imgContainerStyles} className="imgContainer">
-            <img src={this.props.imgSrc} className="img" style={imgStyles} />
-       </div>
-    )
-  }
-}
-class CardAvatar extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (
-      <div style={avatarContainerStyles} className="infoContainer">
-        <img src={this.props.avatarSrc} style={avatarImgStyles} />
-      </div>
-    )
-  }
-}
-class CardTitle extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (
-      <div className="titleDiv">
-        <h1 id={this.props.targetId} style={titleStyles} className="title">{this.props.title}</h1>
-        <h4 style={subTitleStyles} className="subTitle">{this.props.subTitle}</h4>
-      </div>
-    )
-  }
-}
-class CardBio extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (
-      <div style={bioContainerStyles} className="bioContainer">
-        <p style={bioStyles} className="bio">{this.props.bio}</p>
-      </div>
-    )
-  }
-}
-class CardSocialIcons extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (
-      <div style={iconsContainerStyles} className="iconContainer">
-        <span style={iconStyles} className="icons"><i class="fab fa-facebook-square"></i></span>
-        <span style={iconStyles} className="icons"><i class="fab fa-youtube-square"></i></span>
-        <span style={iconStyles} className="icons"><i class="fab fa-twitter-square"></i></span>
-      </div>
-    )
-  }
-}
-class CardBack extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return (
-      <div style={cardBackStyles} className="cardBack">
+    const { desc, content, actions, title, image, ...others } = this.props;
+    return(
+      <div className={`card ${this.state.fullscreen ? 'fullscreen' : ''} ${this.state.expanded ? 'active' : ''} z-depth-2`}>
+        {
+          this.state.fullscreen ? 
+            <div className="card-close" onClick={()=>this.setState({fullscreen: false, expanded: true})}>
+              <i className="material-icons">close</i>
+            </div> : false
+        }
+        
+        <div className="card-image" onClick={this.handleClick.bind(this)}>
+          {
+            this.state.loading ? <div className="image-loading"><i className="fa fa-circle-o-notch fa-spin fa-4x fa-fw blue-text"></i>
+<span className="sr-only">Loading...</span></div> : false
+          }
+          <img ref="img" className={ this.state.fullscreen ? '' : "z-depth-2"} src={image} onLoad={this.handleImageLoaded.bind(this)} crossOrign="Anonymous" />
+          <span className="card-title">{ this.state.loading ? '' : title }</span>
+        </div>
+        <div className="card-content" onClick={()=>this.setState({expanded: false, fullscreen: true})}>
+          { this.state.fullscreen ? content : desc }
+        </div>
+        <div className="card-action" onClick={()=>this.setState({expanded: false, fullscreen: true})}>
+          { actions }
+        </div>
       </div>
     )
   }
 }
 
-class Card extends React.Component {
-   constructor(props){
-     super(props);
-     this.state = {
-       title : "Jake Sully",
-       subTitle: "@Na'vi_4_Lyf",
-       bio: "Sick of doctors telling me what I couldn't do. I was a marine. A warrior... of the uh... Jarhead Clan. My cup is empty.",
-       direction: "forwards"
-     }
-   }
-   componentWillMount(){
-     if (this.props.type == "wick"){
-     this.setState({
-       title: "John Wick",
-       subTitle: "@HighOctane",
-       bio: "People keep asking if I'm back and I haven't really had an answer. But now, yeah, I'm thinkin' I'm back."
-     });
-     } else if (this.props.type == "groot"){
-       this.setState({
-         title: "Groot",
-         subTitle: "@iAmGroot",
-         bio: "I am Groot. I am Groot... I am Groot, I am Groot, I am Groot I am Groot. I am Groot. I am Groot. I am Groot."
-       })
-     } else if (this.props.type == "hitgirl"){
-       this.setState({
-         title: "Mindy Mcready",
-         subTitle: "@HitGirl",
-         bio: "I can't see through walls but I can kick your ass. I think some tasers look gay. Robin wishes he was me."
-       })
-     }
-   }
-   render(){
-     
-     return (
-         <div className="flipperContainer">
-           <div className="flipper">
-              <div style={cardContainerStyles} className="cardFront cardContainer">
-                  <CardImg imgSrc={this.props.imgSrc} />
-                  <CardAvatar avatarSrc={this.props.avatarSrc} />
-                  <CardTitle targetId={this.props.targetId} title={this.state.title} subTitle={this.state.subTitle} />
-                  <CardBio bio={this.state.bio} />
-                  <CardSocialIcons />
+const Avatars = (props) => {
+  return (
+    <div className="avatars">
+      {
+        props.data.map( (avatar, i) => {
+          return (<div key={i} className="avatar">
+            <img src={avatar.src} alt={avatar.label} />
+          </div>)
+        })
+      }
+    </div>
+  )
+}
+
+const DetailContent = (props) => {
+  return (
+    <ul className="collection comments">
+      {
+        props.data.map( (content, i) => {
+          return (
+            <li className="collection-item comment-item">
+              <div className="comment-header">
+                <div className="chip">
+                  <img src={content.avatar} alt="Contact Person" />
+                  {content.name}
+                </div>
+                <span className="comment-header_time">{content.time}</span>
+                <span className="comment-header_action"><i className={`material-icons comment-icon ${content.liked ? 'blue-text' : ''}`}>thumb_up</i></span>
               </div>
-             <div style={cardBackStyles} className="cardBack">
-               <img className="cardBackImg" style={cardBackImgStyles} src={this.props.cardBackImgSrc}/>
-               <p style={madeByStyles} >@AdamTheWizard</p>
-             </div>
-            </div>
-       </div>
-     )
-   }
- }
- class CardContainer extends React.Component {
-   constructor(props){
-     super(props);
-   }
-   render(){
-     return (
-      <div style={bodyStyles} className="body">
-         <h1 style={headerStyles} className="header">Hover to flip</h1>
-         <div className="flex">
-           
-          <Card imgSrc="http://1.bp.blogspot.com/-tso_pF4jEdU/UPC4zDXEY6I/AAAAAAAAAhE/Vb2Cd8nRZEo/s1600/a.jpg" avatarSrc="https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/p-avatar-sam-worthington.jpg" cardBackImgSrc="https://i.pinimg.com/564x/1e/7e/4d/1e7e4d11c01e57f32410ece8c1961646.jpg" targetId="navi" />
-           
-          <Card type="wick" imgSrc="https://orig00.deviantart.net/db12/f/2012/038/5/0/blood_splatter_background_by_pudgey77-d4ozy89.jpg" avatarSrc="https://d3c1jucybpy4ua.cloudfront.net/data/35521/big_picture/John_Wick.jpg?1428558984" cardBackImgSrc="https://i.pinimg.com/736x/b1/2d/9f/b12d9f259a178fc9dc7bfb6447be7a1c.jpg"/>
-           
-          <Card type="groot" imgSrc="https://wallpaperstudio10.com/static/wpdb/wallpapers/1920x1080/174849.jpg" avatarSrc="https://i.pinimg.com/originals/74/4d/b3/744db3fd9842133829be6e0182c3d62d.jpg" cardBackImgSrc="https://pre00.deviantart.net/0274/th/pre/i/2014/357/0/d/guardians_of_the_galaxy___groot_poster__acrylic__by_cybergal2013-d8aydlf.jpg"/>
-           
-           <Card type="hitgirl" imgSrc="https://media.giphy.com/media/Y6pDMTysYTQ2I/giphy.gif" avatarSrc="https://66.media.tumblr.com/dcf6558ccad075ce4cca03cc1d972f97/tumblr_phhrt8PrRE1tc5gvpo4_250.png" cardBackImgSrc="https://i.pinimg.com/564x/22/f1/3e/22f13ea035bc11beeeb1349550fb3170.jpg"/>
-         </div>
-      </div>
-     )
-   }
- }
- class App extends React.Component {
-   constructor(props){
-     super(props);
-   }
-   render(){
-     return (
-       <div>
-          <CardContainer />
-       </div>
-     )
-   }
- }
+              <div className="comment-body">
+                <p>{content.comments}</p>
+              </div>
+            </li>
+          )
+        })
+      }
+    </ul>
+  )
+}
 
-ReactDOM.render(<App />, root);
+ReactDOM.render(
+  <Card
+    title="Card Title"
+    image="https://s3-us-west-2.amazonaws.com/s.cdpn.io/138980/photo-1431512284068-4c4002298068.jpg"
+    desc={
+      <p>I am a very simple card. I am good at containing small bits of information.</p>
+    }
+    content={
+      <DetailContent 
+        data={[
+          {
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg',
+            name: 'John Steven',
+            comments: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            time: 'NOV 18',
+            liked: false
+          },
+          {
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/rssems/128.jpg',
+            name: 'Bro John',
+            comments: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            time: 'NOV 18',
+            liked: true
+          },
+          {
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/chadengle/128.jpg',
+            name: 'Mai Tai',
+            comments: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            time: 'NOV 18',
+            liked: false
+          },
+          {
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg',
+            name: 'Jenny La',
+            comments: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            time: 'NOV 18',
+            liked: true
+          },
+        ]}
+      />
+    }
+    actions={
+      <div>
+      <Avatars data={[
+        {
+          src: 'https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg',
+          label: 'John'
+        },
+        {
+          src: 'https://s3.amazonaws.com/uifaces/faces/twitter/rssems/128.jpg',
+          label: 'John'
+        },
+        {
+          src: 'https://s3.amazonaws.com/uifaces/faces/twitter/chadengle/128.jpg',
+          label: 'John'
+        },
+        {
+          src: 'https://s3.amazonaws.com/uifaces/faces/twitter/adellecharles/128.jpg',
+          label: 'John'
+        }
+      ]} />
+      <i className="material-icons right">list</i>
+      </div>
+    }
+    onColors={ colors => $('.container').css('background', `linear-gradient(to bottom,  rgba(${colors[0].join(',')},.5) 0%,rgba(${colors[1].join(',')},.5) 100%)`) }
+/>, 
+document.getElementById('test'));
