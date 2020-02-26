@@ -10,7 +10,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-mongoose.connect(process.env.DB,
+mongoose.connect(process.env.DB||"mongodb://localhost:hodgepod",
 { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log('Database connected successfully'))
 	.catch(err => console.log(err)
