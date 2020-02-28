@@ -1,5 +1,5 @@
-@import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,700);
-
+/* @import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,700); */
+@import url(//fonts.googleapis.com/css?family=Roboto&display=swap)
 
 html *{
   transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1) !important;
@@ -9,12 +9,12 @@ html *{
 }
 
 body{
-  background-image: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/tiny_grid.png');
+  background-image: linear-gradient(to right, #43E97B 0%, #38F9D7 100%);
 }
 
 .container{
   width: 375px;
-  height: 662px;
+  height: 600px;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
