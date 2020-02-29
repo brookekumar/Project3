@@ -17,7 +17,7 @@ render(){ return (
 
  <div class="layer layer-2 z-depth-1">
    <div class="center">
-     Slider main container
+   
      <div class="swiper-container">
          <div id="test">
 <Main></Main>
