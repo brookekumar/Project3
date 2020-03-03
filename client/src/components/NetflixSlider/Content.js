@@ -1,19 +1,19 @@
-import React from 'react';
-import IconCross from './../Icons/IconCross';
-import './Content.scss';
+import React from "react";
+import IconCross from "./../Icons/IconCross";
+import "./Content.scss";
 
-const Content = ({ movie, onClose }) => (
+const Content = ({ podcast, onClose }) => (
   <div className="content">
     <div className="content__background">
       <div className="content__background__shadow" />
       <div
         className="content__background__image"
-        style={{ 'background-image': `url(${movie.imageBg})` }}
+        style={{ backgroundImage: `url(${podcast.image})` }}
       />
     </div>
     <div className="content__area">
       <div className="content__area__container">
-        <div className="content__title">{movie.title}</div>
+        <div className="content__title">{podcast.title_original}</div>
         <div className="content__description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
           et euismod ligula. Morbi mattis pretium eros, ut mollis leo tempus

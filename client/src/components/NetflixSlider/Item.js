@@ -1,24 +1,24 @@
-import React from 'react';
-import cx from 'classnames';
-import SliderContext from './context'
-import ShowDetailsButton from './ShowDetailsButton'
-import Mark from './Mark'
-import './Item.scss'
+import React from "react";
+import cx from "classnames";
+import SliderContext from "./context";
+import ShowDetailsButton from "./ShowDetailsButton";
+import Mark from "./Mark";
+import "./Item.scss";
 
-const Item = ({ movie }) => (
+const Item = ({ podcast }) => (
   <SliderContext.Consumer>
     {({ onSelectSlide, currentSlide, elementRef }) => {
-      const isActive = currentSlide && currentSlide.id === movie.id;
+      const isActive = currentSlide && currentSlide.id === podcast.id;
 
       return (
         <div
           ref={elementRef}
-          className={cx('item', {
-            'item--open': isActive,
+          className={cx("item", {
+            "item--open": isActive
           })}
         >
-          <img src={movie.image} alt="" />
-          <ShowDetailsButton onClick={() => onSelectSlide(movie)} />
+          <img src={podcast.thumbnail} alt="" />
+          <ShowDetailsButton onClick={() => onSelectSlide(podcast)} />
           {isActive && <Mark />}
         </div>
       );

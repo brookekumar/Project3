@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Main from "./Main";
+import PCDetail from "./PCDetail";
 
-class Card extends Component {
+class PCCard extends Component {
   state = {
     expanded: false,
     loading: true,
@@ -17,9 +18,12 @@ class Card extends Component {
 
         <div class="layer layer-2 z-depth-1">
           <div class="center">
+            Slider main container
             <div class="swiper-container">
               <div id="test">
-                <Main></Main>
+                <Main>{/* <PCDetail>
+
+                  </PCDetail> */}</Main>
               </div>
             </div>
           </div>
@@ -28,4 +32,4 @@ class Card extends Component {
     );
   }
 }
-export default Card;
+export default PCCard;
