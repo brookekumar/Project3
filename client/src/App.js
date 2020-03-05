@@ -4,6 +4,8 @@ import Card from "./components/Card";
 import HeaderMain from "./components/HeaderMain";
 import Slider from "./components/NetflixSlider";
 import PCAPITEST from "./components/PCAPITEST";
+import "../src/components/main.css"
+import OMDBTEST from "./components/OMDB/OMDBTEST";
 // import PodcastContainer.js from "./components/PodcastContainer";
 
 const movies = [
@@ -70,6 +72,8 @@ class App extends Component {
         </div> */}
 
         <PCAPITEST />
+        <OMDBTEST/>
+        
       </div>
     );
   }

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 // import Main from "./Main";
-import PCDetail from "./PCDetail";
+import MovieDetail from "./MovieDetail";
 
-class PCCard extends Component {
+class MovieCard extends Component {
   state = {
     expanded: false,
     loading: true,
@@ -30,4 +30,4 @@ class PCCard extends Component {
     );
   }
 }
-export default PCCard;
+export default MovieCard;
