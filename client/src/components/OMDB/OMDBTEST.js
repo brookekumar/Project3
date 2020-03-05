@@ -55,7 +55,7 @@ function OMDBTEST() {
                     { data.searchResults.map((movie,i)=>{
                         return (
                           <>
-                          <h1>{movie.Title}</h1>
+                          {/* <h1>{movie.Title}</h1> */}
                           <Slider.Item2 movie={movie} key={i} />
                           </>
                         )

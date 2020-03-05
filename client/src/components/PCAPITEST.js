@@ -8,7 +8,10 @@ import Slider from "./NetflixSlider";
 
 function PCAPITEST() {
   const [data, setData] = useState({ searchResults: [] });
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState("Health");
+  useEffect(() => {
+    searchQuery(searchInput)
+  }, []);
   // variable that is used here is the searchInput, and the setSearchInput is the function that will be used to change the state
   const searchQuery = async () => {
     console.log("hello");
