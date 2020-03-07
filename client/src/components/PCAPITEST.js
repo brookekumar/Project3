@@ -69,7 +69,7 @@ function PCAPITEST(props) {
 
 export default PCAPITEST;
 //add a button to do the genre API call
-//save the array from the podcast - done
+//save the array from the podcast adcvadv- done
 
 //map through the data.results with .map - done by johnny
 //build components without state by passing props
