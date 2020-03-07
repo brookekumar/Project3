@@ -48,32 +48,54 @@ const movies = [
 ];
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.child = React.createRef();
+
+  }
+  state = {
+    // podcast: "",
+    // movie: "",
+    selectedOne: "",
+    searchTearm: ""
+  }
+
+  onPodcastChange = (event) => {
+    this.setState({
+      selectedOne: event.target.value
+    })
+    console.log(this.state.selectedOne)
+  }
+
+  handleInputChange = (event) => {
+    this.setState({
+      searchTearm: event.target.value
+    })
+    console.log("search tearm:" + this.state.searchTearm)
+  }
+
+  helloClick = () => {
+    console.log(this.child.current)
+    alert("hello click");
+    if (this.child.current) {
+      this.child.current.searchQuery()
+    }
+
+  }
+
   render() {
+
     return (
       <div>
-        {/* <HeaderMain />
-        <PCAPITEST></PCAPITEST>
-        <div style={{ display: "flex" }}>
-          <Slider>
-            {movies.map(movie => (
-              <Slider.Item movie={movie} key={movie.id}>
-                item1
-              </Slider.Item>
-            ))}
-          </Slider>
+        <div>
+          <input type="text" name="inputValue" value={this.state.searchTearm} onChange={this.handleInputChange} />
+          <input type="radio" name="movieorpodcast" value="podcast" onChange={this.onPodcastChange} checked={true} />Podcast
+          <input type="radio" name="movieorpodcast" value="movie" onChange={this.onPodcastChange} />Movie
+          <button onClick={this.helloClick}>Hello!</button>
         </div>
+        <PCAPITEST ref={this.child} selectedOne={this.state.selectedOne} searchTearm={this.state.searchTearm} />
+        <OMDBTEST selectedOne={this.state.selectedOne} searchTearm={this.state.searchTearm} />
 
-        <div style={{ display: "flex" }}>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </div> */}
-
-        <PCAPITEST />
-        <OMDBTEST/>
-        
       </div>
     );
   }

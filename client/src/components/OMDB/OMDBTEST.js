@@ -6,34 +6,46 @@ import Card from "../Card";
 import HeaderMain from "../HeaderMain";
 import Slider from "../NetflixSlider";
 
-function OMDBTEST() {
+function OMDBTEST(props) {
   const [data, setData] = useState({ searchResults: [] });
-  const [searchInput, setSearchInput] = useState("iron man");
+  //const [searchInput, setSearchInput] = useState("iron man");
 
-  useEffect(() => {
-    searchQuery(searchInput)
-  }, []);
   // variable that is used here is the searchInput, and the setSearchInput is the function that will be used to change the state
   const searchQuery = async () => {
     console.log("hello");
   
-     omdbapi.search(searchInput).then(result=>{
+     omdbapi.search(searchTearm).then(result=>{
        console.log("RESULT",result)
        setData({searchResults: result.data.Search})
      })
 
    
   };
+  
+  useEffect(() => {
+    searchQuery("Iron Man")
+  }, []);
+
+  if(props.selectedOne === "movie"){
+    searchQuery();
+  }
+
+  var searchTearm = props.searchTearm
+  if(searchTearm === ""){
+    searchTearm = "Iron Man"
+  }
+
+
 
   return (
     <div>
     
-     {""}
+     {/* {""}
       <input
         type="text"
         value={searchInput}
         onChange={e => setSearchInput(e.target.value)}
-      />{" "}
+      />{" "} */}
       <button onClick={searchQuery}>Hello!</button>
       <button onClick={() => console.log(data)}>Bye!</button>
       <div>

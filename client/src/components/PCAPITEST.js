@@ -6,17 +6,24 @@ import Card from "./Card";
 import HeaderMain from "./HeaderMain";
 import Slider from "./NetflixSlider";
 
-function PCAPITEST() {
+function PCAPITEST(props) {
   const [data, setData] = useState({ searchResults: [] });
-  const [searchInput, setSearchInput] = useState("Health");
+  // const [searchInput, setSearchInput] = useState("Health");
   useEffect(() => {
-    searchQuery(searchInput)
+    searchQuery("Football")
   }, []);
   // variable that is used here is the searchInput, and the setSearchInput is the function that will be used to change the state
+  if(props.selectedOne === "podcast"){
+    searchQuery();
+  }
+  var searchTearm = props.searchTearm
+  if(searchTearm === ""){
+    searchTearm = "Football"
+  }
   const searchQuery = async () => {
     console.log("hello");
     const url =
-      "https://listen-api.listennotes.com/api/v2/search?q=" + searchInput;
+      "https://listen-api.listennotes.com/api/v2/search?q=" + searchTearm;
     const APIKey = "9022dcf8bc974dc5a27989ed9f2792c4";
 
     const result = await axios(url, {
@@ -32,11 +39,11 @@ function PCAPITEST() {
   return (
     <div>
       <HeaderMain />{" "}
-      <input
+      {/* <input
         type="text"
         value={searchInput}
         onChange={e => setSearchInput(e.target.value)}
-      />{" "}
+      />{" "} */}
       <button onClick={searchQuery}>Hello!</button>
       <button onClick={() => console.log(data.results)}>Bye!</button>
       <div>
